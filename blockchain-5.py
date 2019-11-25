@@ -37,12 +37,21 @@ def print_block():
 def hash_block(block):
    return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
+#this function will make a hash for the last transaction
+#until it gets a hash with two zeros in the beginning
+#it changes the nonce (increments the nonce 1 each time)
+#until it gets the hash with '00' 
 def valid_proof(transactions, last_hash, nonce):
    guess = (str(transactions) + str(last_hash) + str(nonce)).encode()
    guess_hash = hashlib.sha256(guess).hexdigest()
    print(guess_hash)
-   return guess_hash[0:2] == '00'
+   return guess_hash[0:5] == '00000'
 
+#this function will extract and hash the last block of
+#the chain and then keep doing valid_proof() 
+#(searching for the '00' beginning hash)
+#it will add 1 to the nonce if it does not get
+#the expected hash
 def pow():
    last_block = blockchain[-1]
    last_hash = hash_block(last_block)
@@ -51,6 +60,9 @@ def pow():
        nonce += 1
    return nonce
 
-print blockchain 
+#we will test the code by printing the blockchain
+print(blockchain)
+#finding the nonce
 nonce = pow()
-print nonce
+#and printing the nonce
+print(nonce)

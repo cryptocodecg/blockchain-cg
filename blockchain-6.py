@@ -1,6 +1,7 @@
 import hashlib
 import json
 
+#the reward for the miner
 reward = 10.0
 
 genesis_block = {
@@ -11,7 +12,9 @@ genesis_block = {
 }
 
 blockchain = [genesis_block]
+#list of transactions
 open_transactions = []
+#the owner of the blockchain
 owner = 'procodecg'
 
 def get_last_value():
@@ -24,7 +27,7 @@ def add_value(recipient, sender=owner, amount=1.0):
    open_transactions.append(transaction)
 
 def get_transaction_value():
-   tx_recipient = raw_input('Enter the recipient of the transaction: ')
+   tx_recipient = input('Enter the recipient of the transaction: ')
    tx_amount = float(input('Enter your transaction amount: '))
    return tx_recipient, tx_amount
 
@@ -54,16 +57,23 @@ def pow():
        nonce += 1
    return nonce
 
+#we have learned about all the functions above
+#now we will see the last function that will do mining 
+#process
 def mine_block():
+#get the last block
    last_block = blockchain[-1]
+#hash the last block
    hashed_block = hash_block(last_block)
+#find the nonce
    nonce = pow()
+#give reward for the miner
    reward_transaction = {
            'sender': 'MINING',
            'recipient': owner,
            'amount': reward
        }
-
+#add the transaction to the list of transaction
    open_transactions.append(reward_transaction)
    block = {
        'previous_hash': hashed_block,
@@ -71,8 +81,11 @@ def mine_block():
        'transaction': open_transactions,
        'nonce': nonce
    }
+#add the block to the blockchain
    blockchain.append(block)
 
+#we will learn about verifying the chain
+#in the next tutorial
 def verify_chain():
    index = 0
    valid = True
@@ -88,6 +101,10 @@ def verify_chain():
        index += 1
    return valid
 
+#the looping for the user to enter the choice
+#we choose 1 to add new transaction
+#then 2 to mine a new block
+#then 3 to print the blockchain
 while True:
    print("Choose an option")
    print('Choose 1 for adding a new transaction')
@@ -97,14 +114,14 @@ while True:
 
    user_choice = get_user_choice()
    
-   if user_choice == 1:
+   if user_choice == '1':
        tx_data = get_transaction_value()
        recipient, amount = tx_data
        add_value(recipient, amount=amount)
        print(open_transactions)
-   elif user_choice == 2:
+   elif user_choice == '2':
        mine_block()
-   elif user_choice == 3:
+   elif user_choice == '3':
        print_block()
    else:
        break

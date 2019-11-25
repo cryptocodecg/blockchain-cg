@@ -1,3 +1,7 @@
+#this is why we import hashlib and json
+#hashlib is for hash library
+#and json is for the format of UTF-8 string that
+#can be read by hashlib
 import hashlib
 import json
 
@@ -34,8 +38,13 @@ def print_block():
 def hash_block(block):
    return hashlib.sha256(json.dumps(block).encode()).hexdigest()
 
+#getting the last block of the chain
+#which is only the genesis block for this example
 last_block = blockchain[-1]
-print "last block: " , last_block
+#printing the last_block
+print ("last block: " , last_block)
+#calling the hash function to hash the block
 last_hash = hash_block(last_block)
-print "last hash: ", last_hash
+#printing the hash 
+print ("last hash: ", last_hash)
 
